@@ -28,12 +28,13 @@ const db = mongoClient.db("book-library");
 const booksCollection = db.collection("book");
 
 //http://localhost:5000/add-book
-// Get all books
+// Get add-books from mongodb database
 app.get("/add-book", async (req, res) => {
   const results = await booksCollection.find({}).toArray();
   res.json(results);
 });
 
+// Add a new book to MongoDB database
 
 app.post("/add-book", async (req, res) => {
   const data = req.body;
@@ -43,7 +44,12 @@ app.post("/add-book", async (req, res) => {
   res.json(result);
 });
 
-
+//get all books
+//http://localhost:5000/books
+app.get("/books", async (req, res) => {
+  const results = await booksCollection.find({}).toArray();
+  res.json(results);
+})
 
 
 // Home route
