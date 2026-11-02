@@ -53,15 +53,22 @@ app.post("/borrowed-books", async (req, res) => {
   res.json(result);
 })
 
-//get borrowed books by user email
+
+
 //http://localhost:5000/MyBorrows
+//get borrowed books by user email
 app.get("/MyBorrows/:email", async (req, res) => {
-  const email = req.params;
-  const results = await borrowedBooksCollection.find({userEmail: email}).toArray();
+  const email = req.params.email;
+  const results = await borrowedBooksCollection.find({ userEmail: email }).toArray();
   res.json(results);
+});
 
-})
-
+//delete borrowed books by id
+app.delete("/MyBorrows/:id", async (req, res) => {
+  const { id } = req.params;
+  const results = await borrowedBooksCollection.deleteOne({ _id: new ObjectId(id) });
+  res.json(results);
+});
 
 
 //get all books
