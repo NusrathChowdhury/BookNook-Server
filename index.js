@@ -46,12 +46,23 @@ app.post("/add-book", async (req, res) => {
   res.json(result);
 });
 
-//http://localhost:5000/borrowed-books
+//http://localhost:5000/borrowed-books for borrowed books
 app.post("/borrowed-books", async (req, res) => {
   const data = req.body;
   const result = await borrowedBooksCollection.insertOne(data);
   res.json(result);
 })
+
+//get borrowed books by user email
+//http://localhost:5000/MyBorrows
+app.get("/MyBorrows/:email", async (req, res) => {
+  const email = req.params;
+  const results = await borrowedBooksCollection.find({userEmail: email}).toArray();
+  res.json(results);
+
+})
+
+
 
 //get all books
 //http://localhost:5000/books
