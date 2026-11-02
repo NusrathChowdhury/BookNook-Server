@@ -27,6 +27,8 @@ const mongoClient = await connectToMongoDB();
 const db = mongoClient.db("book-library");
 const booksCollection = db.collection("book");
 
+const borrowedBooksCollection = db.collection("borrowed-books");
+
 //http://localhost:5000/add-book
 // Get add-books from mongodb database
 app.get("/add-book", async (req, res) => {
@@ -43,6 +45,13 @@ app.post("/add-book", async (req, res) => {
   const result = await booksCollection.insertOne(data);
   res.json(result);
 });
+
+//http://localhost:5000/borrowed-books
+app.post("/borrowed-books", async (req, res) => {
+  const data = req.body;
+  const result = await borrowedBooksCollection.insertOne(data);
+  res.json(result);
+})
 
 //get all books
 //http://localhost:5000/books
