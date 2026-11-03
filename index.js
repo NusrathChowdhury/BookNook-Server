@@ -117,10 +117,60 @@ app.get("/books", async (req, res) => {
 });
 
 app.get("/books/:id", async (req, res) => {
-  const id = req.params;
+  const id = req.params.id;
   const results = await booksCollection.findOne({ _id: new ObjectId(id) });
   res.send(results);
 });
+
+
+
+// Get books added by a specific user
+app.get("/my-books/:email", async (req, res) => {
+  const email = req.params.email;
+
+  const results = await booksCollection.find({ userEmail: email }).toArray();
+
+  res.json(results);
+});
+
+
+// Update a book
+app.patch("/my-books/:id", async (req, res) => {
+  const id = req.params.id;
+  const data = req.body;
+
+  const result = await booksCollection.updateOne(
+    { _id: new ObjectId(id), userEmail: data.userEmail },
+    {
+      $set: {
+        title: data.title,
+        author: data.author,
+        category: data.category,
+        image: data.image,
+        description: data.description,
+        totalCopies: Number(data.totalCopies),
+      },
+    }
+  );
+
+  res.json(result);
+});
+
+
+
+// Delete a book
+app.delete("/my-books/:id", async (req, res) => {
+  const id = req.params.id;
+  const email = req.body.userEmail;
+
+  const result = await booksCollection.deleteOne({
+    _id: new ObjectId(id),
+    userEmail: email,
+  });
+
+  res.json(result);
+});
+
 
 
 
